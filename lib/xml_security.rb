@@ -97,11 +97,16 @@ module XMLSecurity
     
     def decode private_key
       # This is the public key which encrypted the first CipherValue
-      cert   = REXML::XPath.first(self, '//ds:X509Certificate')#, 'ds' => "http://www.w3.org/2000/09/xmldsig#")
-      c1, c2 = REXML::XPath.match(self, '//xenc:CipherValue', 'xenc' => 'http://www.w3.org/2001/04/xmlenc#')
+      certs = REXML::XPath.match(self, '//ds:X509Certificate')#, 'ds' => "http://www.w3.org/2000/09/xmldsig#") array two elements    dcert   = REXML::XPath.first(self, '//ds:X509Certificate')#, 'ds' => "http://www.w3.org/2000/09/xmldsig#")
 
-      cert = OpenSSL::X509::Certificate.new(Base64.decode64(cert.text))
-      return false unless cert.check_private_key(private_key)
+      #Find the certificate for the private key
+      cert = certs.select{|c| OpenSSL::X509::Certificate.new(Base64.decode64(c.text)).check_private_key(private_key)}
+      unless cert.empty?
+        cert = cert[0]
+      else
+        return false
+      end
+      c1, c2 = REXML::XPath.match(self, '//xenc:CipherValue', 'xenc' => 'http://www.w3.org/2001/04/xmlenc#')
 
       # Generate the key used for the cipher below via the RSA::OAEP algo
       rsak      = RSA::Key.new private_key.n, private_key.d
