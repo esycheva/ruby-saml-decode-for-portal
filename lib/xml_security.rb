@@ -136,9 +136,7 @@ module XMLSecurity
       # off the padding. More info about padding is available at
       # http://www.w3.org/TR/2002/REC-xmlenc-core-20021210/Overview.html in
       # Section 5.2
-      out << cipher.update("\x00" * 16)
-      padding = out.bytes.to_a.last
-      self.class.new(out[0..-(padding + 1)])
+      out
     end
 
   end
