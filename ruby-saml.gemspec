@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
      "lib/onelogin/saml/settings.rb",
      "lib/ruby-saml.rb",
      "lib/xml_security.rb",
-	"lib/rsa_ext.rb",		
+     "lib/rsa_ext.rb",
      "ruby-saml.gemspec",
      "test/response.txt",
      "test/ruby-saml_test.rb",
@@ -51,18 +51,24 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<xmlcanonicalizer>, ["= 0.1.0"])
-      s.add_runtime_dependency(%q<uuid>, ["> 2.3.1"])
+      s.add_runtime_dependency(%q<uuid>, ["= 2.3.1"])
+      s.add_runtime_dependency(%q<systemu>, ["~> 2.2.0"])
+      s.add_runtime_dependency(%q<rsa>, ["~> 0.1.4"])
       s.add_development_dependency(%q<shoulda>, [">= 0"])
       s.add_development_dependency(%q<mocha>, [">= 0"])
     else
       s.add_dependency(%q<xmlcanonicalizer>, ["= 0.1.0"])
-      s.add_dependency(%q<uuid>, ["> 2.3.1"])
+      s.add_dependency(%q<uuid>, ["= 2.3.1"])
+      s.add_dependency(%q<systemu>, ["~> 2.2.0"])
+      s.add_dependency(%q<rsa>, ["~> 0.1.4"])
       s.add_dependency(%q<shoulda>, [">= 0"])
       s.add_dependency(%q<mocha>, [">= 0"])
     end
   else
     s.add_dependency(%q<xmlcanonicalizer>, ["= 0.1.0"])
-    s.add_dependency(%q<uuid>, ["> 2.3.1"])
+    s.add_dependency(%q<uuid>, ["= 2.3.1"])
+    s.add_dependency(%q<systemu>, ["~> 2.2.0"])
+    s.add_dependency(%q<rsa>, ["~> 0.1.4"])
     s.add_dependency(%q<shoulda>, [">= 0"])
     s.add_dependency(%q<mocha>, [">= 0"])
   end
