@@ -55,7 +55,7 @@ module XMLSecurity
       end
     end
 
-    def validate_doc(cert_path, logger)
+    def validate_doc(cert, logger)
       # validate references
 
       # remove signature node
@@ -89,9 +89,6 @@ module XMLSecurity
       signature               = Base64.decode64(base64_signature)
 
       # get certificate object
-
-      cert                    = OpenSSL::X509::Certificate.new(File.read(cert_path))
-
       valid_flag              = cert.public_key.verify(OpenSSL::Digest::SHA1.new, signature, canon_string)
 
       return valid_flag
