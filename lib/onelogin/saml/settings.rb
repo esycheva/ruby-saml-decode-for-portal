@@ -4,19 +4,19 @@ module Onelogin::Saml
     attr_accessor :idp_sso_target_url, :idp_cert_fingerprint, :name_identifier_format
 
     def private_key=(private_key_path)
-      @private_key =  File.read(private_key_path)
+      @private_key =  OpenSSL::PKey::RSA.new(File.read(private_key_path))
     end
 
     def private_key
       @private_key
     end
 
-    def idp_public_key=(public_key_path)
-      @idp_public_key = File.read(public_key_path)
+    def idp_public_cert=(idp_public_cert_path)
+      @idp_public_cert = OpenSSL::X509::Certificate.new(File.read(idp_public_cert_path))
     end
 
-    def idp_public_key
-      @idp_public_key
+    def idp_public_cert
+      @idp_public_cert
     end
   end
 end
