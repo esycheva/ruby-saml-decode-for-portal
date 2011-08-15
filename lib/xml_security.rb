@@ -55,7 +55,7 @@ module XMLSecurity
       end
     end
 
-    def validate_doc(base64_cert, logger)
+    def validate_doc(cert_path, logger)
       # validate references
 
       # remove signature node
@@ -63,20 +63,22 @@ module XMLSecurity
       return false unless sig_element
       sig_element.remove
 
-      #check digests
-      REXML::XPath.each(sig_element, "//ds:Reference", {"ds"=>"http://www.w3.org/2000/09/xmldsig#"}) do | ref |
+       #временно выключили проверку дайджеста
 
-        uri                   = ref.attributes.get_attribute("URI").value
-        hashed_element        = REXML::XPath.first(self, "//[@ID='#{uri[1,uri.size]}']")
-        canoner               = XML::Util::XmlCanonicalizer.new(false, true)
-        canon_hashed_element  = canoner.canonicalize(hashed_element)
-        hash                  = Base64.encode64(Digest::SHA1.digest(canon_hashed_element)).chomp
-        digest_value          = REXML::XPath.first(ref, "//ds:DigestValue", {"ds"=>"http://www.w3.org/2000/09/xmldsig#"}).text
-
-        valid_flag            = hash == digest_value
-
-        return valid_flag if !valid_flag
-      end
+#      #check digests
+#      REXML::XPath.each(sig_element, "//ds:Reference", {"ds"=>"http://www.w3.org/2000/09/xmldsig#"}) do | ref |
+#
+#        uri                   = ref.attributes.get_attribute("URI").value
+#        hashed_element        = REXML::XPath.first(self, "//[@ID='#{uri[1,uri.size]}']")
+#        canoner               = XML::Util::XmlCanonicalizer.new(false, true)
+#        canon_hashed_element  = canoner.canonicalize(hashed_element)
+#        hash                  = Base64.encode64(Digest::SHA1.digest(canon_hashed_element)).chomp
+#        digest_value          = REXML::XPath.first(ref, "//ds:DigestValue", {"ds"=>"http://www.w3.org/2000/09/xmldsig#"}).text
+#
+#        valid_flag            = hash == digest_value
+#
+#        return valid_flag if !valid_flag
+#      end
 
       # verify signature
       canoner                 = XML::Util::XmlCanonicalizer.new(false, true)
@@ -87,8 +89,8 @@ module XMLSecurity
       signature               = Base64.decode64(base64_signature)
 
       # get certificate object
-      cert_text               = Base64.decode64(base64_cert)
-      cert                    = OpenSSL::X509::Certificate.new(cert_text)
+
+      cert                    = OpenSSL::X509::Certificate.new(cert_path)
 
       valid_flag              = cert.public_key.verify(OpenSSL::Digest::SHA1.new, signature, canon_string)
 
