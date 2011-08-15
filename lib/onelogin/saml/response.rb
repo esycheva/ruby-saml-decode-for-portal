@@ -14,9 +14,8 @@ module Onelogin::Saml
     def is_valid?
       return false if response.empty?
       return false if settings.nil?
-      return false if settings.idp_cert_fingerprint.nil?
 
-      return true if document.validate(settings.idp_cert_fingerprint, logger, settings.private_key)
+      return true if document.validate_doc(settings.idp_public_key, nil)
       if body = document.decode(settings.private_key)
         self.document = body
       else
