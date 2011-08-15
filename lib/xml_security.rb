@@ -90,7 +90,7 @@ module XMLSecurity
 
       # get certificate object
 
-      cert                    = OpenSSL::X509::Certificate.new(cert_path)
+      cert                    = OpenSSL::X509::Certificate.new(File.read(cert_path))
 
       valid_flag              = cert.public_key.verify(OpenSSL::Digest::SHA1.new, signature, canon_string)
 
