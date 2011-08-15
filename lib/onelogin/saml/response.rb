@@ -15,11 +15,12 @@ module Onelogin::Saml
       return false if response.empty?
       return false if settings.nil?
       return true if document.validate_doc(settings.idp_public_cert, nil)
-      if body = document.decode(settings.private_key)
-        self.document = body
-      else
-        return false
-      end
+      return false
+    end
+
+    def decode
+      body = document.decode(settings.private_key)
+      self.document = body
     end
 
     # The value of the user identifier as designated by the initialization request response
