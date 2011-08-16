@@ -32,7 +32,7 @@ module Onelogin::Saml
     def attributes
       result = {}
       document.elements.each("saml2:Assertion/saml2:AttributeStatement/saml2:Attribute") do |element|
-        result.merge!(element.elements.first.text => element.attributes["FriendlyName"])
+        result.merge!(element.attributes["FriendlyName"] => element.elements.first.text)
       end
       result
     end
