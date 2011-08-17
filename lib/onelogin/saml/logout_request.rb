@@ -12,7 +12,7 @@ module Onelogin::Saml
       request = "<saml2p:LogoutRequest ID=\"#{uuid}\" Version=\"2.0\" IssueInstant=\"#{time}\" xmlns:saml2p=\"urn:oasis:names:tc:SAML:2.0:protocol\">" +
                 "<saml:NameID>#{name_id}</saml:NameID>\n" +
                 "<saml2:Issuer xmlns:saml2=\"urn:oasis:names:tc:SAML:2.0:assertion\">https://r00siaweb01.nvg.ru/idp/shibboleth</saml2:Issuer>\n" +
-                "<samlp:SessionIndex>#{session_index}</samlp:SessionIndex>\n" +
+                "<saml2p:SessionIndex>#{session_index}</saml2p:SessionIndex>\n" +
                 "</samlp:LogoutRequest>"
 
       deflated_request  = Zlib::Deflate.deflate(request, 9)[2..-5]

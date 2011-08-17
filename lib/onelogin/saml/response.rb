@@ -28,12 +28,18 @@ module Onelogin::Saml
       @name_id ||= document.elements["saml2:Assertion/saml2:Subject/saml2:NameID"].text
     end
 
+    def session_index
+      @name_id ||= document.elements["saml2:Assertion/saml2:AuthnStatement"].first.attributes["SessionIndex"]
+    end
+
     # A hash of attributes and values
     def attributes
       result = {}
       document.elements.each("saml2:Assertion/saml2:AttributeStatement/saml2:Attribute") do |element|
         result.merge!(element.attributes["FriendlyName"] => element.elements.first.text)
       end
+      result.merge!("name_id" => name_id)
+      result.merge!("session_index" => session_index)
       result
     end
   end
