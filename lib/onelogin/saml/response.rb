@@ -29,7 +29,7 @@ module Onelogin::Saml
     end
 
     def session_index
-      @session_index ||= document.elements["saml2:Assertion/saml2:AuthnStatement"].first.attributes["SessionIndex"]
+      @session_index ||= document.elements["saml2:Assertion/saml2:AuthnStatement"].attributes["SessionIndex"]
     end
 
     # A hash of attributes and values
