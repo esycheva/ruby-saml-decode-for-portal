@@ -22,9 +22,9 @@ module Onelogin::Saml
       request_params    = "?SAMLRequest=" + encoded_request
 
       params.each_pair do |key, value|
-        request_params << "&#{key}=#{CGI.escape(value.to_s)}&SigAlg=http%3A%2F%2Fwww.w3.org%2F2000%2F09%2Fxmldsig%23rsa-sha1&Signature=#{sign_request_xml(request, settings)}"
+        request_params << "&#{key}=#{CGI.escape(value.to_s)}"
       end
-
+      request_params << "&SigAlg=http%3A%2F%2Fwww.w3.org%2F2000%2F09%2Fxmldsig%23rsa-sha1&Signature=#{sign_request_xml(request, settings)}"
       settings.idp_ssl_target_url + request_params
     end
 
