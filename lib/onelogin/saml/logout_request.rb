@@ -29,7 +29,7 @@ module Onelogin::Saml
     end
 
     def sign_request_xml(xml_request, settings)
-      sig = settings.private_key_logout_sign.sign(OpenSSL::Digest::SHA1.new, xml_request)
+      sig = settings.private_key.sign(OpenSSL::Digest::SHA1.new, xml_request)
       Base64.encode64(sig).gsub(/\n/, '')
     end
 

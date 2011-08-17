@@ -19,12 +19,12 @@ module Onelogin::Saml
       @idp_public_cert
     end
 
-    def private_key_logout_sign=(private_key_path)
-      @private_key_logout_sign = OpenSSL::PKey::RSA.new(File.read(private_key_path))
-    end
-
-    def private_key_logout_sign
-      @private_key_logout_sign
-    end
+#    def private_key_logout_sign=(private_key_path)
+#      @private_key_logout_sign = OpenSSL::PKey::RSA.new(File.read(private_key_path))
+#    end
+#
+#    def private_key_logout_sign
+#      @private_key_logout_sign
+#    end
   end
 end
