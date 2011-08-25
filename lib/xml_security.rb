@@ -32,6 +32,16 @@ require 'rsa_ext'
 
 module XMLSecurity
 
+  def self.sign_query(request_params, settings)
+    request_params = request_params + "&" + "SigAlg=" + CGI.escape('http://www.w3.org/2000/09/xmldsig#rsa-sha1')
+    request_params << "&" + "Signature=" + CGI.escape(Base64.encode64(settings.private_key.sign(OpenSSL::Digest::SHA1.new, request_params)))
+    request_params
+  end
+
+  def self.return_to(uri_string)
+    "&" + "returnTo=" + CGI.escape(uri_string)
+  end
+
   class SignedDocument < REXML::Document
 
     def validate (idp_cert_fingerprint, logger = nil, private_key = nil)
@@ -139,6 +149,5 @@ module XMLSecurity
       padding = out.bytes.to_a.last
       self.class.new(out[0..-(padding + 1)])
     end
-
   end
 end

@@ -1,7 +1,7 @@
 module Onelogin::Saml
   class Settings
     attr_accessor :assertion_consumer_service_url, :issuer, :sp_name_qualifier
-    attr_accessor :idp_sso_target_url, :idp_ssl_target_url, :idp_cert_fingerprint, :name_identifier_format
+    attr_accessor :idp_sso_target_url, :idp_slo_target_url, :idp_cert_fingerprint, :name_identifier_format, :return_to_url
 
     def private_key=(private_key_path)
       @private_key =  OpenSSL::PKey::RSA.new(File.read(private_key_path))
@@ -19,12 +19,5 @@ module Onelogin::Saml
       @idp_public_cert
     end
 
-#    def private_key_logout_sign=(private_key_path)
-#      @private_key_logout_sign = OpenSSL::PKey::RSA.new(File.read(private_key_path))
-#    end
-#
-#    def private_key_logout_sign
-#      @private_key_logout_sign
-#    end
   end
 end

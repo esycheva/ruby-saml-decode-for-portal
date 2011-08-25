@@ -4,14 +4,14 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "ruby-saml"
+    gem.name = "ruby-saml-for-portal"
     gem.summary = %Q{SAML Ruby Tookit}
     gem.description = %Q{SAML toolkit for Ruby on Rails}
     gem.email = "support@onelogin.com"
     gem.homepage = "http://github.com/onelogin/ruby-saml"
     gem.authors = ["OneLogin LLC"]
-    gem.add_dependency("xmlcanonicalizer","= 0.1.0")
-    gem.add_dependency("uuid","= 2.3.1")
+    gem.add_dependency("xmlcanonicalizer","~> 0.1.1")
+    gem.add_dependency("uuid","~> 2.3.3")
     gem.add_dependency("rsa", "~> 0.1.4")
     gem.add_dependency("systemu", "~> 2.2.0")
     gem.add_development_dependency "shoulda"
