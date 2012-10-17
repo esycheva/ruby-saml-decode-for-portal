@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ruby-saml-for-portal}
-  s.version = "0.3.7"
+  s.version = "0.4.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["OneLogin LLC"]
@@ -23,6 +23,8 @@ Gem::Specification.new do |s|
      "VERSION",
      "lib/onelogin/saml.rb",
      "lib/onelogin/saml/authrequest.rb",
+	"lib/onelogin/saml/idp_logout_request.rb",
+	"lib/onelogin/saml/sp_logout_response.rb",
 	"lib/onelogin/saml/logout_request.rb",
      "lib/onelogin/saml/response.rb",
      "lib/onelogin/saml/settings.rb",
@@ -33,7 +35,10 @@ Gem::Specification.new do |s|
      "test/response.txt",
      "test/ruby-saml_test.rb",
      "test/test_helper.rb",
-     "test/xml_security_test.rb"
+     "test/xml_security_test.rb",
+      "spec/idp_logout_request_spec.rb",
+      "spec/spec_helper.rb",
+      "spec/xml_security_spec.rb"
   ]
   s.homepage = %q{http://github.com/onelogin/ruby-saml}
   s.rdoc_options = ["--charset=UTF-8"]

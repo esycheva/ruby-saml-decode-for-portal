@@ -15,12 +15,7 @@ module Onelogin::Saml
                 "<saml2:NameID Format=\"urn:oasis:names:tc:SAML:2.0:nameid-format:transient\">#{name_id}</saml2:NameID>" +
                 "<saml2p:SessionIndex>#{session_index}</saml2p:SessionIndex>" +
                 "</saml2p:LogoutRequest>"
-
-      deflated_request  = Zlib::Deflate.deflate(request, 9)[2..-5]
-      base64_request    = Base64.encode64(deflated_request)
-      encoded_request   = CGI.escape(base64_request)
-      request_params    = "SAMLRequest=" + encoded_request
-
+      request_params    = XMLSecurity.request_params(request)
       request_params = XMLSecurity.sign_query(request_params, settings)
       request_params << XMLSecurity.return_to(settings.return_to_url) unless settings.return_to_url.blank?
       settings.idp_slo_target_url + "?" + request_params

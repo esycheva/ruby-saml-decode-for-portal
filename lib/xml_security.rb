@@ -28,7 +28,7 @@ require "rexml/xpath"
 require "openssl"
 require "xmlcanonicalizer"
 require "digest/sha1"
-require 'rsa_ext'
+require 'rsa_ext.rb'
 
 module XMLSecurity
 
@@ -40,6 +40,30 @@ module XMLSecurity
 
   def self.return_to(uri_string)
     "&" + "returnTo=" + CGI.escape(uri_string)
+  end
+
+  def self.validate_request(saml_request, sing_alg, signature, settings)
+    raise 'Signature must be rsa-sha1 based' unless  sing_alg == "http://www.w3.org/2000/09/xmldsig#rsa-sha1"
+
+    # building query string
+    query = 'SAMLRequest' + '=' + CGI.escape(saml_request)
+    query = query +  "&" + "SigAlg=" + CGI.escape(sing_alg)
+    signature = Base64.decode64(signature)
+    settings.idp_public_cert.public_key.verify(OpenSSL::Digest::SHA1.new, signature, query)
+  end
+
+  def self.decode_request(request)
+	  request = Base64.decode64(request)
+  	zstream = Zlib::Inflate.new(-Zlib::MAX_WBITS)
+  	buf = zstream.inflate(request)
+  	zstream.finish
+  	zstream.close
+  	buf
+  end
+
+  def self.request_params(query,request_str = "SAMLRequest")
+    deflated_request  = Zlib::Deflate.deflate(query, 9)[2..-5]
+    request_str + "=" + CGI.escape(Base64.encode64(deflated_request))
   end
 
   class SignedDocument < REXML::Document

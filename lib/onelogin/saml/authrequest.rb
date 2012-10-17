@@ -13,15 +13,9 @@ module Onelogin::Saml
           "<saml:Issuer>#{settings.issuer}</saml:Issuer>" +
           "<samlp:NameIDPolicy Format=\"#{settings.name_identifier_format}\" AllowCreate=\"true\"/>" +
           "</samlp:AuthnRequest>"
-      
-      deflated_request  = Zlib::Deflate.deflate(request, 9)[2..-5]
-      base64_request    = Base64.encode64(deflated_request)
-      encoded_request   = CGI.escape(base64_request)
-      request_params    = "SAMLRequest=" + encoded_request
-
+      request_params    = XMLSecurity.request_params(request)
       request_params = XMLSecurity.sign_query(request_params, settings)
       settings.idp_sso_target_url + "?" + request_params
     end
-
   end
 end
