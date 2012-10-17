@@ -36,7 +36,12 @@ module Onelogin::Saml
     def attributes
       result = {}
       document.elements.each("saml2:Assertion/saml2:AttributeStatement/saml2:Attribute") do |element|
-        result.merge!(element.attributes["FriendlyName"] => element.elements.first.text)
+        attr_value = element.elements.first.text
+	# for array
+	unless element.elements.first.elements.first.nil?
+          attr_value = element.elements.first.elements.first.elements.map{|v| v.text}
+	end	        
+        result.merge!(element.attributes["FriendlyName"] => attr_value)
       end
       result.merge!("name_id" => name_id)
       result.merge!("session_index" => session_index)
