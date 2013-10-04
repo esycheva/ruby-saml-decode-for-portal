@@ -82,8 +82,8 @@ module XMLSecurity
 
       if validate_doc(base64_cert, logger)
         return true
-      # elsif private_key
-      #   return decode(private_key)
+       elsif private_key
+         return decode(private_key)
       else
         return false
       end
@@ -97,22 +97,20 @@ module XMLSecurity
       return false unless sig_element
       sig_element.remove
 
-       #временно выключили проверку дайджеста
-
 #      #check digests
-#      REXML::XPath.each(sig_element, "//ds:Reference", {"ds"=>"http://www.w3.org/2000/09/xmldsig#"}) do | ref |
-#
-#        uri                   = ref.attributes.get_attribute("URI").value
-#        hashed_element        = REXML::XPath.first(self, "//[@ID='#{uri[1,uri.size]}']")
-#        canoner               = XML::Util::XmlCanonicalizer.new(false, true)
-#        canon_hashed_element  = canoner.canonicalize(hashed_element)
-#        hash                  = Base64.encode64(Digest::SHA1.digest(canon_hashed_element)).chomp
-#        digest_value          = REXML::XPath.first(ref, "//ds:DigestValue", {"ds"=>"http://www.w3.org/2000/09/xmldsig#"}).text
-#
-#        valid_flag            = hash == digest_value
-#
-#        return valid_flag if !valid_flag
-#      end
+      REXML::XPath.each(sig_element, "//ds:Reference", {"ds"=>"http://www.w3.org/2000/09/xmldsig#"}) do | ref |
+
+        uri                   = ref.attributes.get_attribute("URI").value
+        hashed_element        = REXML::XPath.first(self, "//[@ID='#{uri[1,uri.size]}']")
+        canoner               = XML::Util::XmlCanonicalizer.new(false, true)
+        canon_hashed_element  = canoner.canonicalize(hashed_element)
+        hash                  = Base64.encode64(Digest::SHA1.digest(canon_hashed_element)).chomp
+        digest_value          = REXML::XPath.first(ref, "//ds:DigestValue", {"ds"=>"http://www.w3.org/2000/09/xmldsig#"}).text
+
+        valid_flag            = hash == digest_value
+
+        return valid_flag if !valid_flag
+      end
 
       # verify signature
       canoner                 = XML::Util::XmlCanonicalizer.new(false, true)
